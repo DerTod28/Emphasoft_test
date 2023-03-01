@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
-from .mixins import UUIDMixin, TimeStampedMixin
+from .mixins import TimeStampedMixin, UUIDMixin
 
 
 class RoomType(UUIDMixin, TimeStampedMixin):
@@ -41,7 +41,7 @@ class Room(UUIDMixin, TimeStampedMixin):
         verbose_name_plural = 'Комнаты'
 
     def __str__(self):
-        return " - ".join([str(self.number), self.type.name])
+        return ' - '.join([str(self.number), self.type.name])
 
 
 class Reservation(UUIDMixin, TimeStampedMixin):

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Room, RoomType, Reservation, RoomReservation
+
+from .models import Reservation, Room, RoomReservation, RoomType
 
 
 class RoomAdmin(admin.ModelAdmin):
@@ -9,7 +10,7 @@ class RoomAdmin(admin.ModelAdmin):
                      'type__name']
 
     ordering = ['number', 'price', 'capacity', 'type']
-    raw_id_fields = ["type"]
+    raw_id_fields = ['type']
 
 
 admin.site.register(Room, RoomAdmin)
@@ -31,7 +32,7 @@ class RoomReservationInline(admin.TabularInline):
 class ReservationAdmin(admin.ModelAdmin):
     list_display = ['guest', 'start_date', 'end_date']
     search_fields = ['guest', 'start_date', 'end_date']
-    raw_id_fields = ["guest", "room"]
+    raw_id_fields = ['guest', 'room']
 
     inlines = (RoomReservationInline,)
 
