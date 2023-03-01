@@ -8,8 +8,8 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('room/', include('booking.room.urls')),
-    path('user/', include('booking.user.urls')),
+    path('rooms/', include('booking.room.urls')),
+    path('users/', include('booking.user.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
