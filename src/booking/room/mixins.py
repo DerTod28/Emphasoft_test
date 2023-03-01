@@ -1,7 +1,6 @@
 import uuid
 
 from django.db import models
-from rest_framework import permissions
 
 
 class TimeStampedMixin(models.Model):
