@@ -29,9 +29,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'drf_spectacular_sidecar',
-    'booking.room',
-    'booking.user'
-
+    'booking.room.apps.RoomConfig',
+    'booking.user.apps.UserConfig',
+    'booking.reservation.apps.ReservationConfig',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.OrderingFilter'
+    ],
 }
 
 SPECTACULAR_SETTINGS = {

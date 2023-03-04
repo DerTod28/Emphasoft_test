@@ -1,6 +1,8 @@
 from rest_framework import permissions, viewsets
 
-from .mixins import PermissionsMixin
+from booking.utils.views_mixin import PermissionsMixin
+
+from .filters import DateRangeFilterSet
 from .models import Room
 from .serializers import RoomSerializer
 
@@ -9,4 +11,9 @@ class RoomViewSet(PermissionsMixin, viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
-    action_permissions = {'list': [permissions.AllowAny]}
+    filterset_class = DateRangeFilterSet
+    ordering_fields = ['price', 'capacity']
+    action_permissions = {
+        'list': [permissions.AllowAny],
+        'retrieve': [permissions.AllowAny]
+    }
