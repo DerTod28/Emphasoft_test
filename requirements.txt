@@ -19,6 +19,7 @@ PyJWT==2.6.0
 pymongo==4.3.3
 pypandoc==1.10
 pyrsistent==0.19.3
+pytest_django==4.5.2
 python-dateutil==2.8.2
 pytz==2022.7.1
 PyYAML==6.0
