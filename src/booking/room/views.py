@@ -8,6 +8,12 @@ from .serializers import RoomSerializer
 
 
 class RoomViewSet(PermissionsMixin, viewsets.ModelViewSet):
+    """
+    Methods for Room instance.
+    Create, patch, put, delete only for admin, make sure you have the right jwt.
+    Filtering - price, capacity and free rooms - available_after and available_before
+    For ordering choices are - price and capacity
+    """
     permission_classes = [permissions.IsAdminUser]
     queryset = Room.objects.all()
     serializer_class = RoomSerializer

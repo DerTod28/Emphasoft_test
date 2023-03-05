@@ -1,8 +1,10 @@
-from rest_framework import viewsets, mixins, permissions, status
+from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from booking.utils.views_mixin import PermissionsMixin
+
 from .models import Reservation, RoomReservation
 from .serializers import ReservationCreateSerializer, ReservationRoomSerializer
 
@@ -15,6 +17,10 @@ class ReservationViewSet(
     mixins.ListModelMixin,
     viewsets.GenericViewSet
 ):
+    """
+    Methods for Reservation instance.
+    Retrieve only for admin, make sure you have the right jwt.
+    """
     queryset = Reservation.objects.prefetch_related('roomreservation_set')
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ReservationCreateSerializer
@@ -23,7 +29,10 @@ class ReservationViewSet(
         'retrieve': [permissions.IsAdminUser]
     }
 
-    def get_queryset(self):
+    def get_queryset(self) -> queryset:
+        """
+        Returns user's reservations, if user is admin - shows all Reservation objects
+        """
         user = self.request.user
         queryset = super().get_queryset()
 
@@ -33,7 +42,10 @@ class ReservationViewSet(
             return queryset.filter(guest=user)
 
     @action(detail=True, methods=['PATCH'])
-    def cancel(self, request, pk):
+    def cancel(self, request: Request, pk) -> Response:
+        """
+        Change reservation status is 'canceled' for rooms in reservation
+        """
         instance = self.get_object()
 
         qs = instance.roomreservation_set.all()

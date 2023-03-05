@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from booking.room.models import Room
-from booking.utils.models_mixin import UUIDMixin, TimeStampedMixin
+from booking.utils.models_mixin import TimeStampedMixin, UUIDMixin
 
 
 class Reservation(UUIDMixin, TimeStampedMixin):

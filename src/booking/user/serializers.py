@@ -4,6 +4,9 @@ from rest_framework.validators import UniqueValidator
 
 
 class UserSignupSerializer(serializers.ModelSerializer):
+    """
+       Create a user instance with hashed password.
+    """
     email = serializers.EmailField(
         required=True,
         validators=[UniqueValidator(queryset=User.objects.all())]
@@ -18,7 +21,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
             'password': {'write_only': True}
         }
 
-    def create(self, validated_data):
+    def create(self, validated_data) -> User:
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],

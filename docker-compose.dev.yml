@@ -1,4 +1,15 @@
 services:
+  django:
+    build:
+      context: .
+      dockerfile: .ci/django/Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - ".ci/django/deploy/dev/.env"
+    entrypoint: /entrypoint.sh
+    ports:
+      - "8000:8000"
   db:
     build:
       context: .ci/postgres/

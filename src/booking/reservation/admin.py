@@ -21,7 +21,7 @@ admin.site.register(Reservation, ReservationAdmin)
 
 class RoomReservationAdmin(admin.ModelAdmin):
     list_display = ['reservation', 'room', 'price', 'status']
-    readonly_fields = ["reservation"]
+    readonly_fields = ['reservation']
 
 
 admin.site.register(RoomReservation, RoomReservationAdmin)
