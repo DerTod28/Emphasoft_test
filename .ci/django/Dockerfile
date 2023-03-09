@@ -16,6 +16,7 @@ COPY src/ .
 
 EXPOSE 8000
 
+COPY pytest.ini /pytest.ini
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 CMD /entrypoint.sh

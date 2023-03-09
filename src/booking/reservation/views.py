@@ -1,19 +1,18 @@
+import logging
+
+from django.db.models import Prefetch
 from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from booking.utils.views_mixin import PermissionsMixin
-
 from .models import Reservation, RoomReservation
-from .serializers import ReservationCreateSerializer, ReservationRoomSerializer
+from .serializers import ReservationSerializer
 
 
 class ReservationViewSet(
-    PermissionsMixin,
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
     mixins.ListModelMixin,
     viewsets.GenericViewSet
 ):
@@ -21,13 +20,13 @@ class ReservationViewSet(
     Methods for Reservation instance.
     Retrieve only for admin, make sure you have the right jwt.
     """
-    queryset = Reservation.objects.prefetch_related('roomreservation_set')
+    queryset = Reservation.objects.prefetch_related(
+        Prefetch(
+            'roomreservation_set', queryset=RoomReservation.objects.select_related('room')
+        )
+    ).select_related('guest')
     permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = ReservationCreateSerializer
-
-    action_permissions = {
-        'retrieve': [permissions.IsAdminUser]
-    }
+    serializer_class = ReservationSerializer
 
     def get_queryset(self) -> queryset:
         """
@@ -42,16 +41,15 @@ class ReservationViewSet(
             return queryset.filter(guest=user)
 
     @action(detail=True, methods=['PATCH'])
-    def cancel(self, request: Request, pk) -> Response:
+    def cancel(self, request: Request, pk: int) -> Response:
         """
-        Change reservation status is 'canceled' for rooms in reservation
+        Change reservation status to 'canceled' for rooms in reservation
         """
-        instance = self.get_object()
+        RoomReservation.objects.filter(
+            reservation_id=pk
+        ).exclude(
+            status=RoomReservation.StatusType.CANCELED
+        ).update(status=RoomReservation.StatusType.CANCELED)
 
-        qs = instance.roomreservation_set.all()
-        for i in qs:
-            i.status = RoomReservation.StatusType.CANCELED
-            i.save()
-
-        serialized_data = {'data': ReservationRoomSerializer(qs, many=True).data}
-        return Response(status=status.HTTP_201_CREATED, data=serialized_data)
+        serializer = self.get_serializer(self.get_object())
+        return Response(status=status.HTTP_201_CREATED, data=serializer.data)

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
 
-from booking.room.models import Room, RoomType
+from booking.room.models import Room
 
 
 @pytest.mark.django_db
@@ -28,13 +28,10 @@ def test_make_free_room_reservation(client):
 
     access_token = response.data['access']
 
-    room_type = RoomType.objects.create(name='Односпальная с 1 кроватью')
-
     room_data = {
         'number': 1,
         'price': 1500,
         'capacity': 1,
-        'type': room_type
     }
 
     room = Room.objects.create(**room_data)
@@ -80,13 +77,10 @@ def test_another_user_reservations(client):
 
     access_token = response.data['access']
 
-    room_type = RoomType.objects.create(name='Односпальная с 1 кроватью')
-
     room_data = {
         'number': 1,
         'price': 1500,
         'capacity': 1,
-        'type': room_type
     }
 
     room = Room.objects.create(**room_data)

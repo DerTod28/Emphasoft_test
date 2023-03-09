@@ -52,3 +52,9 @@ After login you get access and refresh tokens
 /reservations/
 
 /reservations/ {id} /
+
+## Tests
+
+```shell
+pytest
+```

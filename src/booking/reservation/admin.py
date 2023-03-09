@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Reservation, RoomReservation
+from booking.reservation.models import Reservation, RoomReservation
 
 
 class RoomReservationInline(admin.TabularInline):
@@ -20,7 +20,7 @@ admin.site.register(Reservation, ReservationAdmin)
 
 
 class RoomReservationAdmin(admin.ModelAdmin):
-    list_display = ['reservation', 'room', 'price', 'status']
+    list_display = ['reservation', 'room', 'status']
     readonly_fields = ['reservation']
 
 
