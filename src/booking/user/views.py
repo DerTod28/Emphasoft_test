@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from rest_framework import generics, permissions
 from rest_framework.permissions import AllowAny
 
-from .serializers import UserSignupSerializer
+from booking.user.serializers import UserSignupSerializer
 
 
 class RegisterView(generics.CreateAPIView):

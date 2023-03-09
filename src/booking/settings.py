@@ -1,7 +1,7 @@
 """
 Django settings for booking project.
 """
-
+import logging.handlers
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -16,6 +16,20 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'default': {
+            'class': 'logging.StreamHandler'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['default'],
+            'level': 'DEBUG'
+        },
+    }
+}
 
 # Application definition
 
@@ -85,7 +99,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'booking.wsgi.application'
 
-
 # Database
 
 DATABASES = {
@@ -101,7 +114,6 @@ DATABASES = {
         'PORT': os.environ['POSTGRES_PORT'],
     }
 }
-
 
 # Password validation
 
@@ -134,7 +146,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 
